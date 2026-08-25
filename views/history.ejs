@@ -1,0 +1,72 @@
+<% pageTitle = 'Menu History' %>
+<%- include('partials/header') %>
+
+<div class="card">
+  <h2>Uploaded Weeks</h2>
+
+  <% if (batches.length === 0) { %>
+    <div class="empty-state">No weekly menus uploaded yet.</div>
+  <% } else { %>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Week</th>
+            <th>Source File</th>
+            <th>Uploaded</th>
+            <th>Days</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% batches.forEach(batch => { %>
+            <tr>
+              <td><%= batch.week_start %> &ndash; <%= batch.week_end %></td>
+              <td><%= batch.source_filename %></td>
+              <td><%= batch.created_at %></td>
+              <td class="download-links">
+                <% batch.pdfs.forEach(pdf => { %>
+                  <a href="<%= pdf.download %>" target="_blank"><%= pdf.weekday %></a>
+                <% }) %>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  <% } %>
+</div>
+
+<div class="card">
+  <h2>Email Log</h2>
+
+  <% if (emailLog.length === 0) { %>
+    <div class="empty-state">No daily send attempts logged yet.</div>
+  <% } else { %>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>When</th>
+            <th>Status</th>
+            <th>Weekday</th>
+            <th>Recipients</th>
+            <th>Detail</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% emailLog.forEach(entry => { %>
+            <tr>
+              <td><%= entry.created_at %></td>
+              <td><span class="badge <%= entry.status %>"><%= entry.status %></span></td>
+              <td><%= entry.weekday || '' %></td>
+              <td><%= entry.recipients || '' %></td>
+              <td><%= entry.message || '' %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  <% } %>
+</div>
+
+<%- include('partials/footer') %>

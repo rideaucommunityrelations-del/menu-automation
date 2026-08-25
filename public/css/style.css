@@ -1,0 +1,257 @@
+:root {
+  --green-900: #0f3d24;
+  --green-700: #1b6b3c;
+  --green-600: #228b4d;
+  --green-500: #2fa85f;
+  --green-100: #e6f4ea;
+  --green-50: #f3faf5;
+  --ink: #1c2620;
+  --muted: #5c6b62;
+  --border: #d3e6d9;
+  --danger: #b3261e;
+  --danger-bg: #fdecea;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: light;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background: var(--green-50);
+  color: var(--ink);
+}
+
+header {
+  background: var(--green-900);
+  color: #fff;
+  padding: 0.85rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.brand {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+header nav {
+  display: flex;
+  gap: 1.25rem;
+}
+
+header nav a {
+  color: var(--green-100);
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+header nav a:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
+main {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 0 1.5rem 3rem;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.75rem;
+  box-shadow: 0 1px 3px rgba(15, 61, 36, 0.06);
+  margin-bottom: 1.5rem;
+}
+
+h2 {
+  margin-top: 0;
+  color: var(--green-900);
+  font-size: 1.15rem;
+}
+
+.hint {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin-top: -0.5rem;
+}
+
+label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--green-900);
+  margin-bottom: 0.3rem;
+}
+
+input[type="file"] {
+  width: 100%;
+  padding: 0.6rem 0.65rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 0.95rem;
+  background: #fff;
+  color: var(--ink);
+}
+
+.field {
+  margin-bottom: 1rem;
+}
+
+button[type="submit"] {
+  background: var(--green-600);
+  color: #fff;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 0.5rem;
+}
+
+button[type="submit"]:hover {
+  background: var(--green-700);
+}
+
+.banner {
+  padding: 1rem 1.25rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+}
+
+.banner.success {
+  background: var(--green-100);
+  border: 1px solid var(--green-500);
+  color: var(--green-900);
+}
+
+.banner.error {
+  background: var(--danger-bg);
+  border: 1px solid var(--danger);
+  color: var(--danger);
+}
+
+.download-links a {
+  display: inline-block;
+  margin-right: 1rem;
+  margin-top: 0.5rem;
+  color: var(--green-700);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.download-links a:hover {
+  text-decoration: underline;
+}
+
+.table-scroll {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+table {
+  width: 100%;
+  min-width: 640px;
+  border-collapse: collapse;
+  background: #fff;
+}
+
+.table-scroll table {
+  border: none;
+  border-radius: 0;
+}
+
+th, td {
+  text-align: left;
+  padding: 0.65rem 0.85rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.9rem;
+}
+
+th {
+  background: var(--green-100);
+  color: var(--green-900);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.03em;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.badge.sent { background: var(--green-100); color: var(--green-700); }
+.badge.skipped { background: #fff4e0; color: #8a5a00; }
+.badge.error { background: var(--danger-bg); color: var(--danger); }
+
+.empty-state {
+  padding: 2rem;
+  text-align: center;
+  color: var(--muted);
+}
+
+@media (max-width: 640px) {
+  header {
+    padding: 0.75rem 1rem;
+    justify-content: center;
+  }
+
+  header nav {
+    gap: 1rem;
+  }
+
+  header nav a {
+    font-size: 0.9rem;
+  }
+
+  main {
+    margin: 1rem auto;
+    padding: 0 0.85rem 2rem;
+  }
+
+  .card {
+    padding: 1.1rem;
+    border-radius: 8px;
+  }
+
+  button[type="submit"] {
+    width: 100%;
+  }
+
+  .download-links a {
+    display: block;
+    margin-right: 0;
+  }
+
+  th, td {
+    padding: 0.55rem 0.65rem;
+    font-size: 0.85rem;
+  }
+}

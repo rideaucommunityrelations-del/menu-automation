@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: menu-app
+    env: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: GMAIL_USER
+        sync: false
+      - key: GMAIL_APP_PASSWORD
+        sync: false
+      - key: MENU_RECIPIENTS
+        sync: false
+    # NOTE: free tier has no persistent disk. db/menu.db and everything in
+    # output/ live on the container's ephemeral filesystem and are wiped on
+    # every restart or redeploy — reception needs to re-upload the current
+    # week's file after any redeploy. Revisit with a paid plan + persistent
+    # disk (or an external DB/storage) if history needs to survive deploys.
+    #
+    # cron-job.org (or similar) must be configured separately to POST to
+    # https://<this-service>.onrender.com/send-daily-menu once every morning —
+    # Render itself doesn't run scheduled jobs on the free plan.

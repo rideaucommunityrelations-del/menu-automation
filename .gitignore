@@ -1,0 +1,23 @@
+node_modules/
+__pycache__/
+*.pyc
+
+# SQLite database - contains batch/email history, never commit
+db/*.db
+db/*.db-shm
+db/*.db-wal
+
+# Uploaded excels + generated PDFs
+uploads/*
+!uploads/.gitkeep
+output/*
+!output/.gitkeep
+
+# Local runtime artifacts
+server.log
+*.log
+.server.pid
+.DS_Store
+
+# Environment / secrets
+.env

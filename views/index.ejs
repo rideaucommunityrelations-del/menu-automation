@@ -1,0 +1,33 @@
+<% pageTitle = 'Upload Weekly Menu' %>
+<%- include('partials/header') %>
+
+<% if (error) { %>
+  <div class="banner error"><strong>Couldn't process that file:</strong> <%= error %></div>
+<% } %>
+
+<% if (success) { %>
+  <div class="banner success">
+    Generated 7 daily menus from <strong><%= success.source_filename %></strong>
+    (<%= success.week_start %> &ndash; <%= success.week_end %>).
+    <div class="download-links">
+      <% success.pdfs.forEach(pdf => { %>
+        <a href="<%= pdf.download %>" target="_blank"><%= pdf.weekday %></a>
+      <% }) %>
+    </div>
+  </div>
+<% } %>
+
+<div class="card">
+  <h2>Upload This Week's Menu</h2>
+  <p class="hint">Upload the chef's weekly menu excel. It will generate 7 daily menu PDFs, ready to be
+    emailed out automatically each morning.</p>
+  <form action="/upload" method="POST" enctype="multipart/form-data">
+    <div class="field">
+      <label for="menu_file">Weekly Menu (.xlsx)</label>
+      <input type="file" name="menu_file" id="menu_file" accept=".xlsx" required>
+    </div>
+    <button type="submit">Upload &amp; Generate</button>
+  </form>
+</div>
+
+<%- include('partials/footer') %>

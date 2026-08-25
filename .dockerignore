@@ -1,0 +1,18 @@
+node_modules
+.git
+.gitignore
+__pycache__
+*.pyc
+
+db/*.db
+db/*.db-shm
+db/*.db-wal
+
+uploads/*
+output/*
+
+*.log
+.server.pid
+.DS_Store
+.env
+Start Menu App.command

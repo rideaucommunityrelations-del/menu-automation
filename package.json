@@ -1,0 +1,19 @@
+{
+  "name": "menu-app",
+  "version": "1.0.0",
+  "description": "Uploads the chef's weekly menu excel, generates 7 daily menu PDFs, and emails each one out on its day",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "license": "UNLICENSED",
+  "dependencies": {
+    "better-sqlite3": "^13.0.3",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "multer": "^2.0.0",
+    "nodemailer": "^9.0.5"
+  }
+}
