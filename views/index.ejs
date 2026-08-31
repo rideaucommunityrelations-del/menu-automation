@@ -15,20 +15,13 @@
       <% }) %>
       <a href="<%= success.download_all %>">Download All (ZIP)</a>
     </div>
-    <% if (success.weeklyEmail.status === 'sent') { %>
-      <p class="hint">Emailed all 7 days to <%= success.weeklyEmail.recipients.join(', ') %>.</p>
-    <% } else if (success.weeklyEmail.status === 'skipped') { %>
-      <p class="hint">Weekly email not sent: <%= success.weeklyEmail.message %>.</p>
-    <% } else { %>
-      <p class="hint">Weekly email failed to send: <%= success.weeklyEmail.message %>. PDFs were generated fine &mdash; check History for details.</p>
-    <% } %>
   </div>
 <% } %>
 
 <div class="card">
   <h2>Upload This Week's Menu</h2>
-  <p class="hint">Upload the chef's weekly menu excel. It will generate 7 daily menu PDFs, ready to be
-    emailed out automatically each morning.</p>
+  <p class="hint">Upload the chef's weekly menu excel. It will generate 7 daily menu PDFs, downloadable
+    individually or all at once as a ZIP.</p>
   <form action="/upload" method="POST" enctype="multipart/form-data">
     <div class="field">
       <label for="menu_file">Weekly Menu (.xlsx)</label>

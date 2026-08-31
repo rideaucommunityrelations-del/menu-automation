@@ -83,8 +83,12 @@ router.post('/upload', upload.single('menu_file'), async (req, res) => {
 
   try {
     const manifest = await generateWeek(req.file.path, outDir);
-    const batch_id = insertBatch({ source_filename: req.file.originalname, output_dir, manifest });
-    const weeklyEmail = await sendWeeklyBatchEmail({ batch_id, output_dir, manifest });
+    // Weekly auto-email is implemented (sendWeeklyBatchEmail below) but not
+    // called here — Render's free tier blocks all outbound SMTP (465/587/25
+    // all timeout), so Gmail can never be reached from this container. Left
+    // in place to re-enable if the plan is upgraded or mailer.js is switched
+    // to an HTTPS-based email API.
+    insertBatch({ source_filename: req.file.originalname, output_dir, manifest });
 
     res.render('index', {
       error: null,
@@ -97,7 +101,6 @@ router.post('/upload', upload.single('menu_file'), async (req, res) => {
           download: `/download/${output_dir}/${d.pdf_filename}`,
         })),
         download_all: `/download-all/${output_dir}`,
-        weeklyEmail,
       },
     });
   } catch (err) {
