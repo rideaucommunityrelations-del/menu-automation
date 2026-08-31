@@ -13,7 +13,15 @@
       <% success.pdfs.forEach(pdf => { %>
         <a href="<%= pdf.download %>" target="_blank"><%= pdf.weekday %></a>
       <% }) %>
+      <a href="<%= success.download_all %>">Download All (ZIP)</a>
     </div>
+    <% if (success.weeklyEmail.status === 'sent') { %>
+      <p class="hint">Emailed all 7 days to <%= success.weeklyEmail.recipients.join(', ') %>.</p>
+    <% } else if (success.weeklyEmail.status === 'skipped') { %>
+      <p class="hint">Weekly email not sent: <%= success.weeklyEmail.message %>.</p>
+    <% } else { %>
+      <p class="hint">Weekly email failed to send: <%= success.weeklyEmail.message %>. PDFs were generated fine &mdash; check History for details.</p>
+    <% } %>
   </div>
 <% } %>
 

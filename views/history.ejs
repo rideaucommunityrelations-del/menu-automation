@@ -27,6 +27,7 @@
                 <% batch.pdfs.forEach(pdf => { %>
                   <a href="<%= pdf.download %>" target="_blank"><%= pdf.weekday %></a>
                 <% }) %>
+                <a href="<%= batch.download_all %>">Download All (ZIP)</a>
               </td>
             </tr>
           <% }) %>

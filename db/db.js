@@ -80,6 +80,15 @@ function listBatches() {
   return batches.map((b) => ({ ...b, pdfs: pdfsStmt.all(b.id) }));
 }
 
+function findBatchByOutputDir(output_dir) {
+  const batch = db.prepare('SELECT * FROM batches WHERE output_dir = ?').get(output_dir);
+  if (!batch) return null;
+  const pdfs = db
+    .prepare('SELECT * FROM batch_pdfs WHERE batch_id = ? ORDER BY date_iso ASC')
+    .all(batch.id);
+  return { ...batch, pdfs };
+}
+
 function findBatchForDate(date_iso) {
   return db
     .prepare('SELECT * FROM batches WHERE week_start <= ? AND week_end >= ? ORDER BY created_at DESC LIMIT 1')
@@ -113,6 +122,7 @@ module.exports = {
   db,
   insertBatch,
   listBatches,
+  findBatchByOutputDir,
   findBatchForDate,
   findBatchPdf,
   insertEmailLog,
