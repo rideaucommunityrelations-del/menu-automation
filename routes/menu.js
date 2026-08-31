@@ -73,6 +73,12 @@ router.get('/', (req, res) => {
   res.render('index', { error: null, success: null });
 });
 
+// /upload only has a POST handler; a bare GET here (bookmark, page refresh
+// after submitting, browser back/forward) would otherwise 404.
+router.get('/upload', (req, res) => {
+  res.redirect('/');
+});
+
 router.post('/upload', upload.single('menu_file'), async (req, res) => {
   if (!req.file) {
     return res.status(400).render('index', { error: 'No file was uploaded.', success: null });
