@@ -205,46 +205,4 @@ router.post('/send-daily-menu', async (req, res) => {
   }
 });
 
-// TEMPORARY: diagnostic route to figure out which outbound SMTP port (if any)
-// Render's free tier allows. Remove once the mailer issue is resolved.
-router.get('/debug-smtp', async (req, res) => {
-  const net = require('net');
-  const tls = require('tls');
-  const dns = require('dns').promises;
-
-  const results = {};
-  let addr;
-  try {
-    const addresses = await dns.resolve4('smtp.gmail.com');
-    addr = addresses[0];
-    results.resolvedIPv4 = addr;
-  } catch (err) {
-    return res.json({ error: `DNS resolve4 failed: ${err.message}` });
-  }
-
-  function tryConnect(port, useTls) {
-    return new Promise((resolve) => {
-      const start = Date.now();
-      const connectFn = useTls ? tls.connect : net.connect;
-      const socket = connectFn({ host: addr, port, servername: 'smtp.gmail.com', timeout: 8000 }, () => {
-        resolve({ ok: true, ms: Date.now() - start });
-        socket.destroy();
-      });
-      socket.on('timeout', () => {
-        resolve({ ok: false, error: 'timeout', ms: Date.now() - start });
-        socket.destroy();
-      });
-      socket.on('error', (err) => {
-        resolve({ ok: false, error: err.message, ms: Date.now() - start });
-      });
-    });
-  }
-
-  results.port465_tls = await tryConnect(465, true);
-  results.port587_plain = await tryConnect(587, false);
-  results.port25_plain = await tryConnect(25, false);
-
-  res.json(results);
-});
-
 module.exports = router;
