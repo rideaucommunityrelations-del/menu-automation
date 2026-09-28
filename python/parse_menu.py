@@ -16,6 +16,8 @@ LABELS = {
     "lunch_entree": "lunch entr",       # matches "Lunch Entree" / "Lunch Entrée"
     "appetizer": "appetizer",
     "dinner_entree": "dinner entr",     # matches both Dinner Entree rows; grab 1st then next occurrence
+    "dinner_vegetable": "vegetable",
+    "dinner_starch": "starch",
     "dinner_dessert": "dinner dessert",
 }
 
@@ -69,6 +71,8 @@ def parse_weekly_menu(xlsx_path, year=None):
         "appetizer": find_row(LABELS["appetizer"]),
         "dinner_entree_1": find_row(LABELS["dinner_entree"], occurrence=1),
         "dinner_entree_2": find_row(LABELS["dinner_entree"], occurrence=2),
+        "dinner_vegetable": find_row(LABELS["dinner_vegetable"]),
+        "dinner_starch": find_row(LABELS["dinner_starch"]),
         "dinner_dessert": find_row(LABELS["dinner_dessert"]),
     }
 

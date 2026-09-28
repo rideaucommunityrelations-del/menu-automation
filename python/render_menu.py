@@ -91,11 +91,41 @@ def draw_paired_block(draw, zone_key, item1, item2):
         cy += lh
 
 
+def draw_entrees_with_sides(draw, zone_key, item1, item2, starch, vegetable):
+    """Same as draw_paired_block's entree/or/entree stack, plus a 'Served with
+    Starch & Vegetable' line underneath - all centered together in one zone."""
+    top, bottom, max_w, spacing = ZONES[zone_key]
+
+    lines1 = wrap_text(draw, item1, FONT, max_w)
+    lines2 = wrap_text(draw, item2, FONT, max_w)
+    sides_lines = wrap_text(draw, f"Served with {starch} & {vegetable}", FONT, max_w)
+    lh = line_height(draw, FONT)
+
+    total_h = (lh * len(lines1) + lh + lh * len(lines2) + spacing * 2
+               + spacing + lh * len(sides_lines))
+    cy = (top + bottom) / 2 - total_h / 2
+
+    for ln in lines1:
+        draw_centered_line(draw, ln, cy)
+        cy += lh
+    cy += spacing
+    draw_centered_line(draw, "or", cy)
+    cy += lh + spacing
+    for ln in lines2:
+        draw_centered_line(draw, ln, cy)
+        cy += lh
+    cy += spacing
+    for ln in sides_lines:
+        draw_centered_line(draw, ln, cy)
+        cy += lh
+
+
 def render_day(background_path, data, output_pdf_path):
     """
     data: dict with keys:
       menu_date, daily_soup, soup_of_week, sandwich_of_day, lunch_entree,
-      appetizer, dinner_entree_1, dinner_entree_2, dinner_dessert
+      appetizer, dinner_entree_1, dinner_entree_2, dinner_vegetable,
+      dinner_starch, dinner_dessert
     """
     img = Image.open(background_path).convert("RGB")
     draw = ImageDraw.Draw(img)
@@ -106,7 +136,8 @@ def render_day(background_path, data, output_pdf_path):
     draw_paired_block(draw, "soup", data["daily_soup"], data["soup_of_week"])
     draw_paired_block(draw, "sandwich", data["sandwich_of_day"], data["lunch_entree"])
     draw_paired_block(draw, "appetizer", data["appetizer"], "Rideau House Salad")
-    draw_paired_block(draw, "dinner_entrees", data["dinner_entree_1"], data["dinner_entree_2"])
+    draw_entrees_with_sides(draw, "dinner_entrees", data["dinner_entree_1"], data["dinner_entree_2"],
+                             data["dinner_starch"], data["dinner_vegetable"])
     draw_single_block(draw, "dessert", data["dinner_dessert"])
 
     # Fixed side note (same every day) with underline beneath
@@ -136,6 +167,8 @@ if __name__ == "__main__":
         "appetizer": "Vegetable Samosa with Raita Sauce",
         "dinner_entree_1": "Pesto Penne Noodles with Turkey Meatballs, Bacon, Grape Tomatoes and Parmesan",
         "dinner_entree_2": "Herb Crusted Baked Sole Filet with White Wine Dill Sauce",
+        "dinner_vegetable": "Sauteed Spinach and Mushrooms",
+        "dinner_starch": "Jasmine Rice",
         "dinner_dessert": "Vanilla Tapioca Pudding",
     }
     render_day("menu_background.png", sample, "test_output.pdf")
