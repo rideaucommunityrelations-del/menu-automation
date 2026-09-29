@@ -30,6 +30,36 @@ ZONES = {
 
 FONT = ImageFont.truetype(POPPINS_BOLD, BODY_SIZE)
 
+# Slightly smaller than the main body size for the "Served with Starch &
+# Vegetable" line - kept as close to matching as the fixed zone height allows
+# (the dinner-entrees zone is bounded above and below by dividers printed on
+# the background art, so a run of "Served with X & Y" text at full body size
+# wraps to 2 lines on longer weeks and runs into the divider below).
+SIDES_SIZE = 54
+SIDES_FONT = ImageFont.truetype(POPPINS_BOLD, SIDES_SIZE)
+SIDES_GAP = 32
+
+# Matches the dotted section dividers already printed on the Canva background
+# (sampled from the appetizer/dinner divider: ~13px dash, 12px gap, dark teal).
+DIVIDER_COLOR = (10, 39, 43)
+DIVIDER_WIDTH = 2026
+DIVIDER_DASH = 13
+DIVIDER_GAP = 12
+DIVIDER_THICKNESS = 11
+
+
+def draw_dashed_divider(draw, cy):
+    """Draws a dotted line centered on the page at height cy, matching the
+    style of the section dividers already printed on the background image."""
+    x = CENTER_X - DIVIDER_WIDTH / 2
+    end_x = CENTER_X + DIVIDER_WIDTH / 2
+    top = cy - DIVIDER_THICKNESS / 2
+    bottom = cy + DIVIDER_THICKNESS / 2
+    while x < end_x:
+        dash_end = min(x + DIVIDER_DASH, end_x)
+        draw.rectangle([x, top, dash_end, bottom], fill=DIVIDER_COLOR)
+        x += DIVIDER_DASH + DIVIDER_GAP
+
 
 def wrap_text(draw, text, font, max_width):
     words = text.split()
@@ -93,16 +123,19 @@ def draw_paired_block(draw, zone_key, item1, item2):
 
 def draw_entrees_with_sides(draw, zone_key, item1, item2, starch, vegetable):
     """Same as draw_paired_block's entree/or/entree stack, plus a 'Served with
-    Starch & Vegetable' line underneath - all centered together in one zone."""
+    Starch & Vegetable' line underneath - set in a smaller font with extra
+    space above it so it reads as its own separated line, not a run-on of the
+    entree text."""
     top, bottom, max_w, spacing = ZONES[zone_key]
 
     lines1 = wrap_text(draw, item1, FONT, max_w)
     lines2 = wrap_text(draw, item2, FONT, max_w)
-    sides_lines = wrap_text(draw, f"Served with {starch} & {vegetable}", FONT, max_w)
+    sides_lines = wrap_text(draw, f"Served with {starch} & {vegetable}", SIDES_FONT, max_w)
     lh = line_height(draw, FONT)
+    sides_lh = line_height(draw, SIDES_FONT)
 
     total_h = (lh * len(lines1) + lh + lh * len(lines2) + spacing * 2
-               + spacing + lh * len(sides_lines))
+               + SIDES_GAP + sides_lh * len(sides_lines))
     cy = (top + bottom) / 2 - total_h / 2
 
     for ln in lines1:
@@ -114,10 +147,11 @@ def draw_entrees_with_sides(draw, zone_key, item1, item2, starch, vegetable):
     for ln in lines2:
         draw_centered_line(draw, ln, cy)
         cy += lh
-    cy += spacing
+    draw_dashed_divider(draw, cy + SIDES_GAP / 2)
+    cy += SIDES_GAP
     for ln in sides_lines:
-        draw_centered_line(draw, ln, cy)
-        cy += lh
+        draw_centered_line(draw, ln, cy, font=SIDES_FONT)
+        cy += sides_lh
 
 
 def render_day(background_path, data, output_pdf_path):
